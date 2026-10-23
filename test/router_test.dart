@@ -36,10 +36,7 @@ void main() {
         router.routerDelegate.currentConfiguration.uri.toString(),
         AppRoutes.dashboard,
       );
-      expect(
-        container.read(authNotifierProvider).isAuthenticated,
-        isTrue,
-      );
+      expect(container.read(authNotifierProvider).isAuthenticated, isTrue);
     });
 
     testWidgets('Authenticated user lands on /dashboard and can switch tabs', (

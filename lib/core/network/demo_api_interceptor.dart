@@ -25,11 +25,7 @@ class DemoApiInterceptor extends Interceptor {
     }
 
     handler.resolve(
-      Response<dynamic>(
-        requestOptions: options,
-        statusCode: 200,
-        data: data,
-      ),
+      Response<dynamic>(requestOptions: options, statusCode: 200, data: data),
     );
   }
 
@@ -94,8 +90,7 @@ class _DemoStore {
       subject: 'english',
       chapter: '阅读理解',
       year: 2024,
-      stem:
-          'According to the passage, the author believes that technological progress ____.',
+      stem: 'According to the passage, the author believes that technological progress ____.',
       options: const [
         {'key': 'A', 'content': 'is always beneficial to society'},
         {'key': 'B', 'content': 'should be guided by human values'},
@@ -103,8 +98,7 @@ class _DemoStore {
         {'key': 'D', 'content': 'is independent of public policy'},
       ],
       answer: 'B',
-      explanation:
-          '作者在末段强调技术进步必须以人为本，需要价值观与公共政策的引导，故选 B。',
+      explanation: '作者在末段强调技术进步必须以人为本，需要价值观与公共政策的引导，故选 B。',
     ),
     _question(
       id: 'q-4',
@@ -145,8 +139,7 @@ class _DemoStore {
       id: 'm-2',
       status: 'active',
       subject: 'english',
-      stem:
-          'According to the passage, the primary reason for environmental changes is not merely natural shifts but ______.',
+      stem: 'According to the passage, the primary reason for environmental changes is not merely natural shifts but ______.',
       options: const [
         {'key': 'A', 'content': 'human activities'},
         {'key': 'B', 'content': 'climate cycles'},
@@ -225,9 +218,36 @@ class _DemoStore {
     _program('p-zju-2024', 'school-zju', '085404', '计算机技术', 2024, 45, 382, 390),
     _program('p-zju-2023', 'school-zju', '085404', '计算机技术', 2023, 40, 375, 383),
     _program('p-zju-2022', 'school-zju', '085404', '计算机技术', 2022, 38, 368, 376),
-    _program('p-ecnu-2024', 'school-ecnu', '085400', '软件工程', 2024, 60, 355, 362),
-    _program('p-ecnu-2023', 'school-ecnu', '085400', '软件工程', 2023, 55, 348, 356),
-    _program('p-hust-2024', 'school-hust', '085404', '计算机技术', 2024, 50, 370, 379),
+    _program(
+      'p-ecnu-2024',
+      'school-ecnu',
+      '085400',
+      '软件工程',
+      2024,
+      60,
+      355,
+      362,
+    ),
+    _program(
+      'p-ecnu-2023',
+      'school-ecnu',
+      '085400',
+      '软件工程',
+      2023,
+      55,
+      348,
+      356,
+    ),
+    _program(
+      'p-hust-2024',
+      'school-hust',
+      '085404',
+      '计算机技术',
+      2024,
+      50,
+      370,
+      379,
+    ),
     _program('p-xdu-2024', 'school-xdu', '085404', '计算机技术', 2024, 70, 340, 350),
   ];
 
@@ -346,8 +366,7 @@ class _DemoStore {
     if (segments.length == 1 && method == 'GET') {
       return _success({
         'items': [
-          for (final question in _questions)
-            _questionSummary(question),
+          for (final question in _questions) _questionSummary(question),
         ],
       }, total: _questions.length);
     }
@@ -398,9 +417,7 @@ class _DemoStore {
     Object? body,
   ) {
     if (segments.length == 1 && method == 'GET') {
-      return _success({
-        'items': _mistakes,
-      }, total: _mistakes.length);
+      return _success({'items': _mistakes}, total: _mistakes.length);
     }
 
     if (segments.length == 1 && method == 'POST') {
@@ -416,17 +433,15 @@ class _DemoStore {
     if (segments.length == 3 && segments[2] == 'redo' && method == 'POST') {
       final answer = body is Map<String, dynamic> ? body['answer'] : null;
       final isCorrect = answer == mistake['correctAnswer'];
-      final consecutive = (mistake['consecutiveCorrect'] as int) + (isCorrect ? 1 : 0);
-      final errorCount =
-          (mistake['errorCount'] as int) + (isCorrect ? 0 : 1);
+      final consecutive =
+          (mistake['consecutiveCorrect'] as int) + (isCorrect ? 1 : 0);
+      final errorCount = (mistake['errorCount'] as int) + (isCorrect ? 0 : 1);
       final mastered = consecutive >= 2;
       mistake
         ..['consecutiveCorrect'] = consecutive
         ..['errorCount'] = errorCount
         ..['status'] = mastered ? 'mastered' : 'active'
-        ..['lastWrongAt'] = isCorrect
-            ? mistake['lastWrongAt']
-            : _nowIso;
+        ..['lastWrongAt'] = isCorrect ? mistake['lastWrongAt'] : _nowIso;
 
       return _success({
         'isCorrect': isCorrect,
@@ -438,9 +453,7 @@ class _DemoStore {
       });
     }
 
-    if (segments.length == 3 &&
-        segments[2] == 'status' &&
-        method == 'PATCH') {
+    if (segments.length == 3 && segments[2] == 'status' && method == 'PATCH') {
       final status = body is Map<String, dynamic>
           ? body['status'] as String?
           : null;
@@ -471,9 +484,7 @@ class _DemoStore {
   ) {
     if (segments.length == 1 && method == 'GET') {
       return _success({
-        'items': [
-          for (final card in _dueCards) card['card'],
-        ],
+        'items': [for (final card in _dueCards) card['card']],
       }, total: _dueCards.length);
     }
 
@@ -502,9 +513,7 @@ class _DemoStore {
       );
     }
 
-    if (segments.length == 3 &&
-        segments[2] == 'review' &&
-        method == 'POST') {
+    if (segments.length == 3 && segments[2] == 'review' && method == 'POST') {
       final id = segments[1];
       _dueCards = _dueCards.where((item) {
         final card = item['card'] as Map<String, dynamic>;
@@ -538,9 +547,7 @@ class _DemoStore {
     Object? body,
   ) {
     if (segments.length == 1 && method == 'GET') {
-      return _success({
-        'items': _schools,
-      }, total: _schools.length);
+      return _success({'items': _schools}, total: _schools.length);
     }
 
     final id = segments[1];
@@ -585,9 +592,7 @@ class _DemoStore {
           ),
         );
       } else if (method == 'DELETE') {
-        _targets.removeWhere(
-          (t) => t['schoolId'] == id && t['type'] == type,
-        );
+        _targets.removeWhere((t) => t['schoolId'] == id && t['type'] == type);
       }
 
       return _success({'targets': _targets});
@@ -631,10 +636,7 @@ class _DemoStore {
     };
   }
 
-  Map<String, dynamic> _success(
-    Map<String, dynamic> data, {
-    int? total,
-  }) {
+  Map<String, dynamic> _success(Map<String, dynamic> data, {int? total}) {
     return {
       'success': true,
       'data': data,
@@ -675,7 +677,9 @@ Map<String, dynamic> _question({
     'isApproved': true,
     'reviewStatus': 'approved',
     'isMine': false,
-    'createdAt': DateTime.now().subtract(const Duration(days: 30)).toIso8601String(),
+    'createdAt': DateTime.now()
+        .subtract(const Duration(days: 30))
+        .toIso8601String(),
     'answer': answer,
     'explanation': explanation,
     'version': 1,
@@ -757,7 +761,9 @@ Map<String, dynamic> _school({
     'is211': is211,
     'isDoubleFirstClass': isDoubleFirstClass,
     'isSelfMarking': isSelfMarking,
-    'createdAt': DateTime.now().subtract(const Duration(days: 365)).toIso8601String(),
+    'createdAt': DateTime.now()
+        .subtract(const Duration(days: 365))
+        .toIso8601String(),
   };
 }
 
@@ -816,13 +822,17 @@ Map<String, dynamic> _dueCard(
       'back': back,
       'tags': const <String>['考研', '高频'],
       'isMine': false,
-      'createdAt': DateTime.now().subtract(const Duration(days: 5)).toIso8601String(),
+      'createdAt': DateTime.now()
+          .subtract(const Duration(days: 5))
+          .toIso8601String(),
     },
     'progress': {
       'repetitions': 2,
       'intervalDays': 3,
       'easeFactor': 2.5,
-      'dueAt': DateTime.now().subtract(const Duration(hours: 1)).toIso8601String(),
+      'dueAt': DateTime.now()
+          .subtract(const Duration(hours: 1))
+          .toIso8601String(),
       'lastRating': 'remembered',
     },
   };

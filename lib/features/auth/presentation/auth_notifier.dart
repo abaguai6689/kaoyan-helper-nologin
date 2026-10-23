@@ -40,10 +40,7 @@ class AuthState {
 class AuthNotifier extends Notifier<AuthState> {
   @override
   AuthState build() {
-    return const AuthState(
-      isAuthenticated: true,
-      currentUser: UserModel.mock,
-    );
+    return const AuthState(isAuthenticated: true, currentUser: UserModel.mock);
   }
 }
 
