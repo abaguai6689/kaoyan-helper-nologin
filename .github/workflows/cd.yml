@@ -38,7 +38,7 @@ jobs:
         run: flutter pub get
 
       - name: Build Web Application
-        run: flutter build web --release --base-href "/kaoyan_helper/"
+        run: flutter build web --release --base-href "/kaoyan-helper-nologin/" --dart-define=DEMO_MODE=true
 
       - name: Upload GitHub Pages Artifact
         uses: actions/upload-pages-artifact@v3
